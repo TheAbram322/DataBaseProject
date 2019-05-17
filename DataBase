@@ -1,0 +1,929 @@
+DROP SCHEMA IF EXISTS WarAndPeace CASCADE;
+CREATE SCHEMA WarAndPeace;
+
+SET SEARCH_PATH = WarAndPeace;
+
+CREATE TABLE PART
+(
+  part_id              INT PRIMARY KEY,
+  part_number          INT  NOT NULL,
+  part_period_start_dt DATE NOT NULL,
+  part_period_end_dt   DATE NOT NULL,
+  part_complete_dt     DATE NOT NULL,
+  part_amount_pages    INT
+);
+
+CREATE TABLE CHAPTER
+(
+  chapter_id           INT PRIMARY KEY,
+  part_id              INT NOT NULL,
+  FOREIGN KEY (part_id) REFERENCES PART (part_id),
+  chapter_number       INT NOT NULL,
+  chapter_amount_pages INT
+);
+
+CREATE TABLE ACTION
+(
+  action_id         INT PRIMARY KEY,
+  action_nm         VARCHAR(50) NOT NULL,
+  action_type_code  VARCHAR(50) NOT NULL,
+  action_place      VARCHAR(50),
+  action_date_dt    DATE,
+  action_result_txt VARCHAR(200)
+);
+
+CREATE TABLE CHARACTER
+(
+  character_id        INT PRIMARY KEY,
+  character_first_nm  VARCHAR(50) NOT NULL,
+  character_middle_nm VARCHAR(50),
+  character_last_nm   VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE FAMILY
+(
+  family_id         INT PRIMARY KEY,
+  family_nm         VARCHAR(50),
+  family_estate_txt VARCHAR(50)
+);
+
+CREATE TABLE ACTION_X_CHAPTER
+(
+  chapter_id INT,
+  FOREIGN KEY (chapter_id) REFERENCES CHAPTER (chapter_id),
+  action_id  INT,
+  FOREIGN KEY (action_id) REFERENCES ACTION (action_id)
+);
+
+CREATE TABLE ACTION_X_CHARACTER
+(
+  character_id INT,
+  FOREIGN KEY (character_id) REFERENCES CHARACTER (character_id),
+  action_id    INT,
+  FOREIGN KEY (action_id) REFERENCES ACTION (action_id)
+);
+
+CREATE TABLE FAMILY_X_CHARACTER
+(
+  character_id INT,
+  FOREIGN KEY (character_id) REFERENCES CHARACTER (character_id),
+  family_id    INT,
+  FOREIGN KEY (family_id) REFERENCES FAMILY (family_id)
+);
+
+
+INSERT INTO PART
+VALUES (1, 1, CAST('1805-05-30' AS DATE), CAST('1807-11-20' AS DATE), CAST('1868-01-10' AS DATE), 308);
+
+INSERT INTO CHAPTER
+VALUES (1101, 1, 1, 5);
+
+INSERT INTO CHAPTER
+VALUES (1102, 1, 2, 3);
+
+INSERT INTO CHAPTER
+VALUES (1103, 1, 3, 5);
+
+INSERT INTO CHAPTER
+VALUES (1104, 1, 4, 6);
+
+INSERT INTO CHAPTER
+VALUES (1105, 1, 5, 3);
+
+INSERT INTO CHAPTER
+VALUES (1106, 1, 6, 10);
+
+INSERT INTO CHAPTER
+VALUES (1107, 1, 7, 4);
+
+INSERT INTO CHAPTER
+VALUES (1108, 1, 8, 2);
+
+INSERT INTO CHAPTER
+VALUES (1109, 1, 9, 3);
+
+INSERT INTO CHAPTER
+VALUES (1110, 1, 10, 2);
+
+INSERT INTO CHAPTER
+VALUES (1111, 1, 11, 4);
+
+INSERT INTO CHAPTER
+VALUES (1112, 1, 12, 4);
+
+INSERT INTO CHAPTER
+VALUES (1113, 1, 13, 4);
+
+INSERT INTO CHAPTER
+VALUES (1114, 1, 14, 2);
+
+INSERT INTO CHAPTER
+VALUES (1115, 1, 15, 6);
+
+INSERT INTO CHAPTER
+VALUES (1116, 1, 16, 5);
+
+INSERT INTO CHAPTER
+VALUES (1117, 1, 17, 7);
+
+INSERT INTO CHAPTER
+VALUES (1118, 1, 18, 3);
+
+INSERT INTO CHAPTER
+VALUES (1119, 1, 19, 4);
+
+INSERT INTO CHAPTER
+VALUES (1120, 1, 20, 9);
+
+INSERT INTO CHAPTER
+VALUES (1121, 1, 21, 5);
+
+INSERT INTO CHAPTER
+VALUES (1122, 1, 22, 4);
+
+INSERT INTO CHAPTER
+VALUES (1123, 1, 23, 8);
+
+INSERT INTO CHAPTER
+VALUES (1124, 1, 24, 6);
+
+INSERT INTO CHAPTER
+VALUES (1125, 1, 25, 5);
+
+INSERT INTO CHARACTER
+VALUES (11011, 'Анна', 'Павловна', 'Шерер');
+
+INSERT INTO CHARACTER
+VALUES (11012, 'Василий', 'Сергеевич', 'Курагин');
+
+INSERT INTO FAMILY
+VALUES (3, 'Курагины', NULL);
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11012, 3);
+
+INSERT INTO CHARACTER
+VALUES (11021, 'Елизавета', 'Карловна', 'Болконская');
+
+INSERT INTO FAMILY
+VALUES (1, 'Болконские', 'Лысые горы');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11021, 1);
+
+INSERT INTO CHARACTER
+VALUES (11022, 'Элен', 'Васильевна', 'Курагина');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11022, 3);
+
+INSERT INTO CHARACTER
+VALUES (11023, 'Ипполит', 'Васильевич', 'Курагин');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11023, 3);
+
+INSERT INTO CHARACTER
+VALUES (11024, 'Пьер', 'Кириллович', 'Безухов');
+
+INSERT INTO FAMILY
+VALUES (4, 'Безуховы', NULL);
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11024, 4);
+
+INSERT INTO CHARACTER
+VALUES (11031, 'Андрей', 'Николаевич', 'Болконский');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11031, 1);
+
+INSERT INTO CHARACTER
+VALUES (11041, 'Анна', 'Михайловна', 'Друбецкая');
+
+INSERT INTO FAMILY
+VALUES (5, 'Друбецкие', NULL);
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11041, 5);
+
+INSERT INTO CHARACTER
+VALUES (11042, 'Борис', NULL, 'Друбецкой');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11042, 5);
+
+INSERT INTO ACTION
+VALUES (1, 'Первое появление Анны Шерер', 'Появление героя', 'Дом Анны Павловны', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1101, 1);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11011, 1);
+
+INSERT INTO ACTION
+VALUES (2, 'Первое появление Василия Курагина', 'Появление героя', 'Дом Анны Павловны', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1101, 2);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11012, 2);
+
+INSERT INTO ACTION
+VALUES (3, 'Первое появление Елизаветы Болконской', 'Появление героя', 'Дом Анны Павловны', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1102, 3);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11021, 3);
+
+INSERT INTO ACTION
+VALUES (4, 'Первое появление Элен Курагиной', 'Появление героя', 'Дом Анны Павловны', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1102, 4);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11022, 4);
+
+INSERT INTO ACTION
+VALUES (5, 'Первое появление Ипполита Курагина', 'Появление героя', 'Дом Анны Павловны', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1102, 5);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11023, 5);
+
+INSERT INTO ACTION
+VALUES (6, 'Первое появление Пьера Безухова', 'Появление героя', 'Дом Анны Павловны', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1102, 6);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11024, 6);
+
+INSERT INTO ACTION
+VALUES (7, 'Первое появление Андрея Болконского', 'Появление героя', 'Дом Анны Павловны', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1103, 7);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11031, 7);
+
+INSERT INTO ACTION
+VALUES (8, 'Первое появление Анны Друбецкой', 'Появление героя', 'Дом Анны Павловны', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1104, 8);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11041, 8);
+
+INSERT INTO ACTION
+VALUES (9, 'Первое появление Бориса Друбецкого', 'Появление героя', 'Дом Анны Павловны', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1104, 9);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11042, 9);
+
+INSERT INTO ACTION
+VALUES (10, 'Вечер у Анны Павловны Шерер', 'Встреча', 'Дом Анны Павловны', NULL, 'Знакомство Безухова и Болконского.');
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1102, 10);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11011, 10);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11012, 10);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11021, 10);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11022, 10);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11023, 10);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11024, 10);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11031, 10);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11041, 10);
+
+INSERT INTO ACTION
+VALUES (11, 'Спор о Наполеоне', 'Диалог', 'Дом Анны Павловны', NULL,
+        'Дружба Андрея Болконского и Пьера Безухова. У всех, кроме Андрея, складывается мнение, что Пьер поддерживает Наполеона.');
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1104, 11);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11011, 11);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11021, 11);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11023, 11);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11024, 11);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11031, 11);
+
+INSERT INTO ACTION
+VALUES (12, 'Прошение Анны Друбецкой о переводе сына в гвардию', 'Диалог', 'Дом Анны Павловны', NULL,
+        'Борис был переведён в гвардию');
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1104, 12);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11012, 12);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11041, 12);
+
+INSERT INTO ACTION
+VALUES (13, 'Разговор Андрея и Пьера о войне и о жизни', 'Диалог', 'Кабинет в доме Княза Андрея', NULL,
+        'Пьер обещает князю прекратить кутежи с Курагиным, но нарушает своё обещание.');
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1105, 13);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1106, 13);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11031, 13);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11024, 13);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11021, 13);
+
+INSERT INTO CHARACTER
+VALUES (11061, 'Анатоль', 'Васильевич', 'Курагин');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11061, 3);
+
+INSERT INTO ACTION
+VALUES (14, 'Первое появление Анатоля Курагина', 'Появление героя', 'Дом Анатоля', NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1106, 14);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11061, 14);
+
+INSERT INTO CHARACTER
+VALUES (11062, 'Фёдор', 'Иванович', 'Долохов');
+
+INSERT INTO ACTION
+VALUES (15, 'Первое появление Фёдора Долохова', 'Появление героя', 'Дом Анатоля', NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1106, 15);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11062, 15);
+
+INSERT INTO ACTION
+VALUES (16, 'Кутёж в доме Анатоля Курагина', 'Встреча', 'Дом Анатоля', NULL,
+        'Долохов выигрывает пари, выпив залпом бутылку рома, сидя на окне');
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1106, 16);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11061, 16);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11062, 16);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11024, 16);
+
+INSERT INTO CHARACTER
+VALUES (11071, 'Илья', 'Андреевич', 'Ростов');
+
+INSERT INTO FAMILY
+VALUES (2, 'Ростовы', 'Дом на Поварской в Москве и Отрадное');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11071, 2);
+
+INSERT INTO ACTION
+VALUES (17, 'Первое появление графа Ростова', 'Появление героя', 'Дом Ростовых на Поварской', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1107, 17);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11071, 17);
+
+INSERT INTO CHARACTER
+VALUES (11072, 'Наталья', 'Николаевна', 'Ростова');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11072, 2);
+
+INSERT INTO ACTION
+VALUES (18, 'Первое появление графини Ростовой', 'Появление героя', 'Дом Ростовых на Поварской', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1107, 18);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11072, 18);
+
+INSERT INTO CHARACTER
+VALUES (11073, 'Марья', 'Львовна', 'Карагина');
+
+INSERT INTO ACTION
+VALUES (19, 'Первое появление Марьи Карагиной', 'Появление героя', 'Дом Ростовых на Поварской', NULL, NULL);
+
+INSERT INTO FAMILY
+VALUES (6, 'Карагины', NULL);
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11073, 6);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1107, 19);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11073, 19);
+
+INSERT INTO ACTION
+VALUES (20, 'Разговор о Пьере и Анатоле', 'Диалог', 'Дом Ростовых на Поварской', NULL, NULL);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11071, 20);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11072, 20);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11041, 20);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11073, 20);
+
+INSERT INTO ACTION
+VALUES (21, 'Продолжение вечера Пьера, случай с квартальным', 'Встреча', 'Дом Анатоля', NULL,
+        'Долохов разжалован в солдаты, Анатоль и Пьер высланы из Петербурга');
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1106, 21);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11061, 21);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11062, 21);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11024, 21);
+
+INSERT INTO CHARACTER
+VALUES (11081, 'Наталья', 'Ильинична', 'Ростова');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11081, 2);
+
+INSERT INTO ACTION
+VALUES (22, 'Первое появление Наташи Ростовой', 'Появление героя', 'Дом Ростовых на Поварской', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1108, 22);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11081, 22);
+
+INSERT INTO CHARACTER
+VALUES (11082, 'Николай', 'Ильич', 'Ростов');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11082, 2);
+
+INSERT INTO ACTION
+VALUES (23, 'Первое появление Николая Ростова', 'Появление героя', 'Дом Ростовых на Поварской', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1108, 23);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11082, 23);
+
+INSERT INTO CHARACTER
+VALUES (11083, 'Пётр', 'Ильич', 'Ростов');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11083, 2);
+
+INSERT INTO ACTION
+VALUES (24, 'Первое появление Пети Ростова', 'Появление героя', 'Дом Ростовых на Поварской', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1108, 24);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11083, 24);
+
+INSERT INTO CHARACTER
+VALUES (11084, 'Софья', 'Александровна', 'Ергольская');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11084, 2);
+
+INSERT INTO ACTION
+VALUES (25, 'Первое появление Сони', 'Появление героя', 'Дом Ростовых на Поварской', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1108, 25);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11084, 25);
+
+INSERT INTO ACTION
+VALUES (26, 'Разговор о Николае и его желании пойти в гусары', 'Диалог', 'Дом Ростовых на Поварской', NULL, NULL)
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1109, 26);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11071, 26);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11073, 26);
+
+INSERT INTO CHARACTER
+VALUES (11091, 'Жюли', NULL, 'Карагина');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11091, 6);
+
+INSERT INTO ACTION
+VALUES (27, 'Первое появление Жюли Карагиной', 'Появление героя', 'Дом Ростовых на Поварской', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1109, 27);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11091, 27);
+
+INSERT INTO CHARACTER
+VALUES (11092, 'Вера', 'Ильинична', 'Ростова');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11092, 2);
+
+INSERT INTO ACTION
+VALUES (28, 'Первое появление Веры Ростовой', 'Появление героя', 'Дом Ростовых на Поварской', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1109, 28);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11092, 28);
+
+INSERT INTO ACTION
+VALUES (30, 'Диалог Сони и Николая', 'Дилог', 'Дом Ростовых на Поварской', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1110, 30);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11082, 30);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11084, 30);
+
+INSERT INTO ACTION
+VALUES (31, 'Диалог Наташи и Бориса', 'Дилог', 'Дом Ростовых на Поварской', NULL,
+        'Борис обещал Наташе жениться на ней через 4 года.');
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1110, 31);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11042, 31);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11081, 31);
+
+INSERT INTO ACTION
+VALUES (32, 'Диалог Анны Друбецкой и графини Ростовой', 'Диалог', 'Дом Ростовых на Поварской', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1111, 32);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11041, 32);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11072, 32);
+
+INSERT INTO CHARACTER
+VALUES (11121, 'Кирилл', 'Владимирович', 'Безухов');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11121, 4);
+
+INSERT INTO ACTION
+VALUES (33, 'Первое появление графа Безухова - отца Пьера', 'Появление героя', 'Дом графа Безухова', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1112, 33);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11121, 33);
+
+INSERT INTO ACTION
+VALUES (34, 'Диалог князя Василия и Анны Друбецкой', 'Диалог', 'Дом графа Безухова', NULL,
+        'Друбецкая идёт в покои графа Безухова, крёстного отца Бориса, узнать о содержании сына');
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1112, 34);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11012, 34);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11041, 34);
+
+
+INSERT INTO ACTION
+VALUES (35, 'Диалог Пьера и Бориса', 'Диалог', 'Дом графа Безухова', NULL,
+        'Борис приглашает Пьера к Ростовым на обед');
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1113, 35);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11024, 35);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11042, 35);
+
+INSERT INTO ACTION
+VALUES (36, 'Графиня Ростова просит денег для Бориса у мужа', 'Диалог', 'Дом Ростовых на Поварской', NULL,
+        'Граф приказывает принести для графини 700 рублей');
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1114, 36);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11071, 36);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11072, 36);
+
+INSERT INTO ACTION
+VALUES (37, 'Деньги на мундир для Бориса', 'Диалог', 'Дом Ростовых на Поварской', NULL,
+        'Анна Михайловна принимает 700 рублей от графини Ростовой на содержание Бориса');
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1114, 37);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11072, 37);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11041, 37);
+
+INSERT INTO CHARACTER
+VALUES (11151, 'Марья', 'Дмитриевна', 'Ахросимова');
+
+INSERT INTO ACTION
+VALUES (38, 'Первое появление Марьи Дмитриевны Ахросимовой', 'Появление героя', 'Дом Ростовых на Поварской', NULL,
+        NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1115, 38);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11151, 38);
+
+INSERT INTO CHARACTER
+VALUES (11152, 'Альфонс', 'Карпович', 'Берг');
+
+INSERT INTO ACTION
+VALUES (39, 'Первое появление Берга', 'Появление героя', 'Дом Ростовых на Поварской', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1115, 39);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11152, 39);
+
+INSERT INTO ACTION
+VALUES (40, 'Разговор гостей Ростова с Бергом', 'Диалог', 'Дом Ростовых на Поварской', NULL,
+        'Становится понятно, что Берга в его карьере интересуют только деньги');
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1115, 40);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11152, 40);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11071, 40);
+
+INSERT INTO ACTION
+VALUES (41, 'Именины Наташи Ростовой', 'Праздник', 'Дом Ростовых на Поварской', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1115, 41);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11071, 41);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11072, 41);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11073, 41);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11081, 41);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11082, 41);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11083, 41);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11084, 41);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11091, 41);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11092, 41);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11151, 41);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11152, 41);
+
+INSERT INTO ACTION
+VALUES (42, 'Ахросимова приезжает на обед к Ростовым', 'Встреча', 'Дом Ростовых на Поварской', NULL,
+        'Начался обед на именинах Наташи');
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11151, 42);
+
+INSERT INTO CHARACTER
+VALUES (11251, 'Николай', 'Андреевич', 'Болконский');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11251, 1);
+
+INSERT INTO ACTION
+VALUES (43, 'Первое появление Николая Болконского', 'Появление героя', 'Лысые горы', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1125, 43);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11251, 43);
+
+INSERT INTO CHARACTER
+VALUES (11221, 'Марья', 'Николаевна', 'Болконская');
+
+INSERT INTO FAMILY_X_CHARACTER
+VALUES (11221, 1);
+
+INSERT INTO ACTION
+VALUES (44, 'Первое появление Марья Болконская', 'Появление героя', 'Лысые горы', NULL, NULL);
+
+INSERT INTO ACTION_X_CHAPTER
+VALUES (1122, 44);
+
+INSERT INTO ACTION_X_CHARACTER
+VALUES (11221, 44);
+
+SELECT *
+FROM ACTION
+WHERE action_type_code = 'Диалог';
+
+SELECT SUM(rows1)
+FROM (
+       SELECT COUNT(*) AS rows1
+       FROM ACTION
+
+       UNION ALL
+
+       SELECT COUNT(*)
+       FROM PART
+
+       UNION ALL
+
+       SELECT COUNT(*)
+       FROM CHAPTER
+
+       UNION ALL
+
+       SELECT COUNT(*)
+       FROM CHARACTER
+
+       UNION ALL
+
+       SELECT COUNT(*)
+       FROM FAMILY
+     ) AS TAB;
+
+SELECT character_first_nm, character_middle_nm, character_last_nm, family.family_nm
+FROM CHARACTER
+       INNER JOIN FAMILY
+                  ON family_id IN (
+                    SELECT family_id
+                    FROM FAMILY_X_CHARACTER
+                    WHERE FAMILY_X_CHARACTER.character_id = CHARACTER.character_id
+                  );
+
+SELECT *
+FROM ACTION
+WHERE action_id IN (
+  SELECT ACTION_X_CHARACTER.action_id
+  FROM ACTION_X_CHARACTER
+  WHERE ACTION_X_CHARACTER.character_id IN (
+    SELECT character_id
+    FROM CHARACTER
+    WHERE character_first_nm = 'Наталья' AND character_last_nm = 'Ростова' AND character_middle_nm = 'Ильинична'
+    )
+  );
+
+SELECT character_first_nm,
+       character_middle_nm,
+       character_last_nm,
+       CHAPTER.part_id        AS part,
+       CHAPTER.chapter_number AS number
+FROM CHARACTER
+       INNER JOIN CHAPTER
+                  ON chapter_id IN (
+                    SELECT chapter_id
+                    FROM ACTION_X_CHAPTER
+                    WHERE CHAPTER.chapter_id = ACTION_X_CHAPTER.chapter_id
+                      AND action_id IN (
+                      SELECT action_id
+                      FROM ACTION
+                      WHERE action_type_code = 'Появление героя'
+                        AND ACTION.action_id IN (
+                        SELECT ACTION_X_CHARACTER.action_id
+                        FROM ACTION_X_CHARACTER
+                        WHERE ACTION_X_CHARACTER.character_id = CHARACTER.character_id
+                      )
+                    )
+                  );
+
+INSERT INTO CHARACTER
+VALUES (777, 'Алексей', 'Фёдорович','Карамазов');
+
+SELECT *
+FROM CHARACTER
+WHERE character_last_nm = 'Карамазов';
+
+UPDATE CHARACTER
+SET character_first_nm = 'Иван'
+WHERE character_last_nm = 'Карамазов';
+
+DELETE
+FROM CHARACTER
+WHERE character_last_nm = 'Карамазов';
+
+INSERT INTO FAMILY
+VALUES (322, 'Карамазовы', NULL);
+
+SELECT *
+FROM FAMILY
+WHERE family_nm = 'Карамазовы';
+
+UPDATE FAMILY
+SET family_nm = 'Кирсановы'
+WHERE family_nm= 'Карамазовы';
+
+DELETE
+FROM FAMILY
+WHERE family_nm = 'Кирсановы';
